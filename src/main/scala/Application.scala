@@ -7,6 +7,7 @@ import collection.JavaConversions._
 
 /**
  * Simple database client.
+ * @note No use of async / await or Future.map yet.
  */
 object Application extends App with DataAccess {
   val defaultTimeout = 5.seconds
