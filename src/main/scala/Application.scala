@@ -1,15 +1,17 @@
-import scala.concurrent.{Await, ExecutionContext}
-import scala.concurrent.duration.DurationInt
-import scala.async.Async.{async, await}
 import slick.driver.PostgresDriver.api._
+
+import scala.async.Async.{async, await}
+import scala.concurrent.Future
 
 /**
  * Simple database client.
  */
-object Application extends App with DataAccess {
-  implicit val executionContext = ExecutionContext.global
-
-  val asyncRoot = async {
+object Application extends AsyncApp with DataAccess {
+  /**
+    * Asynchronous entry-point for the application.
+    * @return A [[Future]] representing asynchronous execution.
+    */
+  override def asyncMain(): Future[Unit] = async {
     val database = openDefaultDatabase()
 
     // Drop and re-create the database schema.
@@ -47,7 +49,4 @@ object Application extends App with DataAccess {
 
     database.close()
   }
-
-  // Wait for root asynchronous operation to complete.
-  Await.result(asyncRoot, 10.seconds)
 }
