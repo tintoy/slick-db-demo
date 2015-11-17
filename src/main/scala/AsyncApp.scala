@@ -9,7 +9,6 @@ trait AsyncApp extends App {
 
   /**
     * The default timeout period for the asynchronous application entry-point.
-    * @return
     */
   def asyncMainTimeout = 5.minutes
 

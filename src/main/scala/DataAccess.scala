@@ -57,7 +57,7 @@ trait DataAccess {
   }
 
   /**
-   * Default settings for database settings.
+   * Default values for database settings.
    */
   private val databaseSettingDefaults: Config =
     ConfigHelper.parseScalaMap(Map(
