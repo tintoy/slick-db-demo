@@ -16,7 +16,7 @@ trait AsyncApp extends App {
     * Asynchronous entry-point for the application.
     * @return A [[Future]] representing asynchronous execution.
     */
-  def asyncMain(): Future[Unit] = Future.successful()
+  def asyncMain(): Future[Unit] = Future.successful(Unit)
 
   /**
     * Asynchronous entry-point for the application.
@@ -25,8 +25,17 @@ trait AsyncApp extends App {
     */
   def asyncMain(commandLineArgs: Array[String]): Future[Unit] = asyncMain()
 
-  // Ugly, but it works.
-  delayedInit(
+  /**
+    * Ugly hack to call "deprecated" method without compiler finger-wagging.
+    * @note Why isn't there an option to selectively suppress this stuff? Lame.
+    */
+  @deprecated("Not really deprecated", since = "Never")
+  private[this] class NotReallyDeprecated {
+    def addDelayedInit(body: => Unit) = delayedInit(body)
+  }
+  private[this] object NotReallyDeprecated extends NotReallyDeprecated
+
+  NotReallyDeprecated.addDelayedInit(
     Await.result(asyncMain(args), atMost = asyncMainTimeout)
   )
 }
